@@ -177,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-light btn-lg"
+                        <button type="submit" class="btn btn-dark btn-lg"
                             data-mdb-ripple-color="dark">Register</button>
                     </div>
                 </form>
