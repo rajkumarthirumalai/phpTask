@@ -34,4 +34,3 @@ if (isset($_POST['id'])) {
 header("Location: dashboard.php");
 exit();
 ?>
-

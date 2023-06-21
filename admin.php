@@ -46,9 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
     <title>Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.11.0/css/mdb.min.css" rel="stylesheet" />
     <style>
-                body {
+        body {
             /* fallback for old browsers */
             background: #a1c4fd;
 
@@ -58,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
             background: linear-gradient(to right, rgba(161, 196, 253, 1), rgba(194, 233, 251, 1))
         }
-
     </style>
 </head>
 
@@ -68,9 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="container">
         <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
-                <div class="text-center mb-4">
-                    <img src="./Public/log.jpg" alt="Logo" width="90" height="90" style="border-radius:25px; margin-bottom:10px">
+            <div class="col-lg-6 col-md-12">
+                <div class="text-center mb-4" style="text-align:center">
+                    <img src="./Public/log.jpg" alt="Logo" width="90" height="90"
+                        style="border-radius:25px; margin-bottom:10px">
                 </div>
 
                 <?php if (isset($error_message)) { ?>
@@ -80,21 +81,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php } ?>
 
                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                    <div class="row">
 
-                    <div class="mb-3">
-                        <label for="emailid" class="form-label">Email Address:</label>
-                        <input type="email" class="form-control" id="emailid" name="emailid" required>
+                        <div class=" mb-3">
+                            <label for="emailid" class="form-label">Email Address:</label>
+                            <input type="email" class="form-control" id="emailid" name="emailid" required>
+                        </div>
+
+                        <div class=" mb-3">
+                            <label for="password" class="form-label">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password:</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-
+                    
                     <button type="submit" type="submit" class=" btn btn-dark btn-lg"
-                            data-mdb-ripple-color="dark">Login</button>
-
-                    <p class="mt-3">Don't have an account? <a href="admin_register.php">Register here</a>.</p>
+                        data-mdb-ripple-color="dark">Login</button>
                 </form>
             </div>
         </div>
