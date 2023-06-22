@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
 require_once "./db_config.php";
@@ -28,8 +32,8 @@ if (isset($_GET["id"])) {
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $updatedFirstname = $_POST["firstname"];
+            echo $updatedFirstname."|";     
             $updatedLastname = $_POST["lastname"];
-            $updatedEmailid = $_POST["emailid"];
             $updatedPhoneNumber = $_POST["phone_number"];
             $updatedAddress = $_POST["address"];
             $updatedDateOfBirth = $_POST["date_of_birth"];
@@ -38,23 +42,10 @@ if (isset($_GET["id"])) {
             $updatedZipcode = $_POST["zipcode"];
             $updatedCapitalAmount = $_POST["capital_amount"];
             $updatedAccountNumber = $_POST["account_number"];
-            echo $updatedFirstname."   ",
-                $updatedLastname."   ",
-                $updatedEmailid."   ",
-                $updatedPhoneNumber."   ",
-                $updatedAddress."   ",
-                $updatedDateOfBirth."   ",
-                $updatedCity."   ",
-                $updatedCountry."   ",
-                $updatedZipcode."   ",
-                $updatedCapitalAmount."   ",
-                $updatedAccountNumber;
-                $updateUserQuery = "UPDATE users SET firstname = ?, lastname = ?, emailid = ?, phone_number = ?, address = ?, date_of_birth = ?, city = ?, country = ?, zipcode = ?, capital_amount = ?, account_number = ? WHERE id = ?";
+                $updateUserQuery = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, address = ?, date_of_birth = ?, city = ?, country = ?, zipcode = ?, capital_amount = ?, account_number = ? WHERE id = ?";
                 $stmt = $conn->prepare($updateUserQuery);
-                $stmt->bind_param("ssssssssssssi", $updatedFirstname, $updatedLastname, $updatedEmailid, $updatedPhoneNumber, $updatedAddress, $updatedDateOfBirth, $updatedCity, $updatedCountry, $updatedZipcode, $updatedCapitalAmount, $updatedAccountNumber, $id);
-                $updateUserQuery = "UPDATE users SET firstname = ?, lastname = ?, emailid = ?, phone_number = ?, address = ?, date_of_birth = ? WHERE id = ?";
-                $stmt = $conn->prepare($updateUserQuery);
-                $stmt->bind_param("ssssssi", $updatedFirstname, $updatedLastname, $updatedEmailid, $updatedPhoneNumber, $updatedAddress, $updatedDateOfBirth, $id);
+                $stmt->bind_param("ssssssssssi", $updatedFirstname, $updatedLastname, $updatedPhoneNumber, $updatedAddress, $updatedDateOfBirth, $updatedCity, $updatedCountry, $updatedZipcode, $updatedCapitalAmount, $updatedAccountNumber, $id);
+                
                 if ($stmt->execute()) {
                     header("Location: view_user.php?id=$id");
                     exit();
@@ -94,8 +85,8 @@ if (isset($_GET["id"])) {
 <body>
 
     <div class="container">
-        <a href="dashboard.php" class="btn btn-dark btn-lg" data-mdb-ripple-color="dark">Back</a>
-
+        
+        <a href="dashboard.php" class="btn btn-dark btn-lg " data-mdb-ripple-color="dark">Back</a>
         <div class="card card-registration card-registration-2 border-0 p-5" style="border-radius: 15px;">
             <form action="<?php echo $_SERVER['PHP_SELF'] . '?id=' . $id; ?>" method="POST">
                 <div class="row">
@@ -109,11 +100,6 @@ if (isset($_GET["id"])) {
                         <input type="text" class="form-control" id="lastname" name="lastname"
                             value="<?php echo $lastname; ?>" required>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label for="emailid" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="emailid" name="emailid" value="<?php echo $emailid; ?>"
-                        required>
                 </div>
                 <div class="row">
                     <div class="col-lg-6 col-md-12 mb-4">

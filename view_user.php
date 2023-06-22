@@ -128,7 +128,8 @@ if (isset($_GET['id'])) {
                         </tr>
                     </table>
                 </div>
-                <a href="dashboard.php" class="btn btn-primary">Back</a>
+                <a href="dashboard.php" class="btn btn-danger">Back</a>
+                <a href="edit_user.php?id=<?php echo $userId; ?>"  class="btn btn-success">Edit</a>
             </div>
         </div>
 
