@@ -17,20 +17,14 @@ if (!isset($_SESSION['admin_email'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+        
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     <script defer src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script defer src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script defer src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-    <script defer src="./js/script.js"></script>
+    <script defer src="script.js"></script>
 </head>
-<style>
-    @media (max-width: 767px) {
-        div .container {
-            width: 100%;
-        }
-    }
-</style>
 
 <body>
 
@@ -46,7 +40,7 @@ if (!isset($_SESSION['admin_email'])) {
     <?php } ?>
 
 
-    <div class="container-fluid my-5">
+    <div class="container my-5">
         <div class="row">
             <div class="table-responsive">
                 <table id="example" class="table table-striped" style="width:100%">
@@ -143,8 +137,10 @@ if (!isset($_SESSION['admin_email'])) {
                                                     class="bi bi-trash-fill px-3"
                                                     style="font-size: 1.5rem;color: #ED2939;"></i></a>
                                         </form>
-                                        <a href="view_user.php?id=<?php echo $id; ?>"><i class="bi bi-three-dots px-3"
-                                                style="font-size: 1.5rem; color: blue;"></i></a>
+                                        <a href="view_user.php?id=<?php echo $id; ?>"><i class="bi bi-eye-fill px-3"
+                                                style="font-size: 1.5rem; color: RGB(2, 117, 216);"></i></a>
+                                        <a href="edit_user.php?id=<?php echo $id; ?>"><i class="bi bi-pencil-square px-3"
+                                                style="font-size: 1.5rem; color: RGB(92, 184, 92);"></i></a>
                                     </div>
 
                                     <script>
@@ -165,6 +161,7 @@ if (!isset($_SESSION['admin_email'])) {
                 </table>
             </div>
         </div>
+        
     </div>
 
     <script>

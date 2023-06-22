@@ -47,59 +47,87 @@ if (isset($_GET['id'])) {
 
 <head>
     <title>User Details</title>
-    <link href="https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.11.0/css/mdb.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+        
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 </head>
 
 <body>
-
-    <script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.11.0/js/mdb.min.js"></script>
     <?php include 'header.php'; ?>
 
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <h2>User Details</h2>
-
-                <div class="mb-3">
-                    <label class="form-label"><b>First Name:</b> <?php echo $firstname; ?></label>
+                <div class="table-responsive">
+                    <table id="example" class="table table-striped" style="width:100%">
+                        <tr>
+                            <td>First Name:</td>
+                            <td>
+                                <?php echo $firstname; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Last Name:</td>
+                            <td>
+                                <?php echo $lastname; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td>
+                                <?php echo $emailid; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Phone Number:</td>
+                            <td>
+                                <?php echo $phone_number; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Date of Birth:</td>
+                            <td>
+                                <?php echo $date_of_birth; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Address:</td>
+                            <td>
+                                <?php echo $address; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Account Number:</td>
+                            <td>
+                                <?php echo $account_number; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Capital Amount:</td>
+                            <td>
+                                <?php echo $capital_amount; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Status:</td>
+                            <td>
+                                <?php echo $status; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Role:</td>
+                            <td>
+                                <?php echo $role; ?>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-
-                <div class="mb-3">
-                    <label class="form-label"><b>Last Name:</b> <?php echo $lastname; ?></label>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label"><b>Email:</b> <?php echo $emailid; ?></label>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label"><b>Phone Number:</b> <?php echo $phone_number; ?></label>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label"><b>Date of Birth:</b> <?php echo $date_of_birth; ?></label>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label"><b>Address:</b> <?php echo $address; ?></label>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label"><b>Account Number:</b> <?php echo $account_number; ?></label>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label"><b>Capital Amount:</b> <?php echo $capital_amount; ?></label>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label"><b>Status:</b> <?php echo $status; ?> </label>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label"><b>Role:</b> <?php echo $role; ?></label>
-                </div>
-
                 <a href="dashboard.php" class="btn btn-primary">Back</a>
             </div>
         </div>

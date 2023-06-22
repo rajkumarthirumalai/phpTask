@@ -40,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn->close();
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -59,6 +58,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
             background: linear-gradient(to right, rgba(161, 196, 253, 1), rgba(194, 233, 251, 1))
         }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
     </style>
 </head>
 
@@ -67,8 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.11.0/js/mdb.min.js"></script>
 
     <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-lg-6 col-md-12">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
                 <div class="text-center mb-4" style="text-align:center">
                     <img src="./Public/log.jpg" alt="Logo" width="90" height="90"
                         style="border-radius:25px; margin-bottom:10px">
@@ -93,13 +99,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="password" class="form-control" id="password" name="password" required>
                         </div>
                     </div>
-                    
+
                     <button type="submit" type="submit" class=" btn btn-dark btn-lg"
                         data-mdb-ripple-color="dark">Login</button>
                 </form>
             </div>
         </div>
     </div>
+    
 
 </body>
 
