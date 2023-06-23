@@ -53,7 +53,7 @@ if (isset($_GET['id'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
-        
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 </head>
 
@@ -61,6 +61,13 @@ if (isset($_GET['id'])) {
     <?php include 'header.php'; ?>
 
     <div class="container">
+        <?php if (isset($_SESSION['registrationSuccess']) && $_SESSION['registrationSuccess']) { ?>
+            <div id="successAlert" class="alert alert-success" role="alert">
+                Update successful!
+            </div>
+            <?php unset($_SESSION['registrationSuccess']); ?>
+            <!-- Unset the success flag after displaying the message -->
+        <?php } ?>
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <h2>User Details</h2>
@@ -129,13 +136,21 @@ if (isset($_GET['id'])) {
                     </table>
                 </div>
                 <a href="dashboard.php" class="btn btn-danger">Back</a>
-                <a href="edit_user.php?id=<?php echo $userId; ?>"  class="btn btn-success">Edit</a>
+                <a href="edit_user.php?id=<?php echo $userId; ?>" class="btn btn-success">Edit</a>
             </div>
         </div>
 
     </div>
 
-
+    <script>
+        // Automatically hide the success alert after 3 seconds
+        setTimeout(function () {
+            var successAlert = document.getElementById('successAlert');
+            if (successAlert) {
+                successAlert.style.display = 'none';
+            }
+        }, 2000);
+    </script>
 </body>
 
 </html>

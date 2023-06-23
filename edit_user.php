@@ -32,32 +32,33 @@ if (isset($_GET["id"])) {
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $updatedFirstname = $_POST["firstname"];
-            echo $updatedFirstname."|";     
             $updatedLastname = $_POST["lastname"];
             $updatedPhoneNumber = $_POST["phone_number"];
             $updatedAddress = $_POST["address"];
             $updatedDateOfBirth = $_POST["date_of_birth"];
             $updatedCity = $_POST["city"];
             $updatedCountry = $_POST["country"];
-            $updatedZipcode = $_POST["zipcode"];
+            $updatedZipcode = $_POST["zipcode"];    
             $updatedCapitalAmount = $_POST["capital_amount"];
             $updatedAccountNumber = $_POST["account_number"];
-                $updateUserQuery = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, address = ?, date_of_birth = ?, city = ?, country = ?, zipcode = ?, capital_amount = ?, account_number = ? WHERE id = ?";
-                $stmt = $conn->prepare($updateUserQuery);
-                $stmt->bind_param("ssssssssssi", $updatedFirstname, $updatedLastname, $updatedPhoneNumber, $updatedAddress, $updatedDateOfBirth, $updatedCity, $updatedCountry, $updatedZipcode, $updatedCapitalAmount, $updatedAccountNumber, $id);
-                
-                if ($stmt->execute()) {
-                    header("Location: view_user.php?id=$id");
-                    exit();
-                } else {
-                    echo "Error: " . $stmt->error;
-                }
-                
+
+            $updateUserQuery = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, address = ?, date_of_birth = ?, city = ?, country = ?, zipcode = ?, capital_amount = ?, account_number = ? WHERE id = ?";
+            $stmt = $conn->prepare($updateUserQuery);
+            $stmt->bind_param("ssssssssssi", $updatedFirstname, $updatedLastname, $updatedPhoneNumber, $updatedAddress, $updatedDateOfBirth, $updatedCity, $updatedCountry, $updatedZipcode, $updatedCapitalAmount, $updatedAccountNumber, $id);
+
+            if ($stmt->execute()) {
+                $_SESSION['registrationSuccess'] = true; // Set registration success flag in session
+                header("Location: view_user.php?id=" . $id);
+                exit();
+            } else {
+                echo "Error: " . $stmt->error;
+            }
+
             $stmt->close();
             $conn->close();
         }
     } else {
-        die($mysql -> error);
+        die($mysql->error);
     }
 
     $stmt->close();
@@ -83,13 +84,13 @@ if (isset($_GET["id"])) {
 </head>
 
 <body>
-
     <div class="container">
-        
         <a href="dashboard.php" class="btn btn-dark btn-lg " data-mdb-ripple-color="dark">Back</a>
         <div class="card card-registration card-registration-2 border-0 p-5" style="border-radius: 15px;">
+
             <form action="<?php echo $_SERVER['PHP_SELF'] . '?id=' . $id; ?>" method="POST">
                 <div class="row">
+
                     <div class="col-lg-6 col-md-12 mb-4">
                         <label for="firstname" class="form-label">First Name</label>
                         <input type="text" class="form-control" id="firstname" name="firstname"

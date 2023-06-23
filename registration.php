@@ -1,60 +1,54 @@
 <?php
 // Start the session
-
-use Random\Engine\Secure;
-
 session_start();
 
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve user input
+// Retrieve user input
     $firstname = $_POST["firstname"];
     $lastname = $_POST["lastname"];
     $emailid = $_POST["emailid"];
     $password = $_POST["password"];
     $phone_number = $_POST["phone_number"];
     $date_of_birth = $_POST["date_of_birth"];
-    $address_lane = $_POST["address_lane"];
+    $address = $_POST["address"];
     $city = $_POST["city"];
-    $state = $_POST["state"];
     $country = $_POST["country"];
     $zipcode = $_POST["zipcode"];
     $account_number = $_POST["account_number"];
     $capital_amount = $_POST["capital_amount"];
 
+    $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+    $recaptcha_secret = '6Lc_WLomAAAAAKzzKf3AYntQET-l3lnRp2O-urgX';
+    $recaptcha_response = $_POST['recaptcha_token'];
+    $remote_ip = $_SERVER['REMOTE_ADDR'];
 
-    if (isset($_POST['g-recaptcha-response'])) {
-        echo $_POST['g-recaptcha-response'];
-        $token = $_POST['g-recaptcha-response'];
-        $url = 'https://www.google.com/recaptcha/api/siteverify';
-        $data = array(
-            'Secret' => '6Lc_WLomAAAAAKzzKf3AYntQET-l3lnRp2O-urgX',
-            'response' => $token
-        );
-    }
-    $options = array(
+    $recaptcha_data = array(
+        'secret' => $recaptcha_secret,
+        'response' => $recaptcha_response,
+        'remoteip' => $remote_ip
+    );
+
+    $recaptcha_options = array(
         'http' => array(
-            'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
+            'header' => "Content-type: application/x-www-form-urlencoded\r\n",
             'method' => 'POST',
-            'content' => http_build_query($data)
+            'content' => http_build_query($recaptcha_data)
         )
     );
 
-    $context = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
-    $response = json_decode($result);
+    $recaptcha_context = stream_context_create($recaptcha_options);
+    $recaptcha_result = file_get_contents($recaptcha_url, false, $recaptcha_context);
+    $recaptcha_response_data = json_decode($recaptcha_result);
 
+    if ($recaptcha_response_data->success) {
+        // Hash the password
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-
-
-    // Hash the password
-    if ($response->success && $response->score >= 0.5) {
-        echo json_encode(array('success' => true, "msg" => "You are not a robot!", "response" => $response));
-        
         // Include the database configuration file
         require_once "./db_config.php";
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // Check if the email already exists
         $checkEmailQuery = "SELECT id FROM users WHERE emailid = ?";
@@ -73,9 +67,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $role_id = 1;
 
         // Prepare and execute the SQL query to insert a new user
-        $insertUserQuery = "INSERT INTO users (firstname, lastname, emailid, password, phone_number, date_of_birth, address_lane, city, state, country, zipcode, account_number, capital_amount, status, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $insertUserQuery = "INSERT INTO users (firstname, lastname, emailid, password, phone_number, date_of_birth, address, city, country, zipcode, account_number, capital_amount, status, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($insertUserQuery);
-        $stmt->bind_param("ssssssssssssdsd", $firstname, $lastname, $emailid, $hashedPassword, $phone_number, $date_of_birth, $address_lane, $city, $state, $country, $zipcode, $account_number, $capital_amount, $status, $role_id);
+        $stmt->bind_param("ssssssssssssss", $firstname, $lastname, $emailid, $hashedPassword, $phone_number, $date_of_birth, $address, $city, $country, $zipcode, $account_number, $capital_amount, $status, $role_id);
+        $stmt->execute();
+
+
+
+        $conn->query($insertUserQuery);
 
         if ($stmt->execute()) {
             $registrationSuccess = true;
@@ -88,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->close();
         $conn->close();
     } else {
-        echo json_encode(array('success' => false, "msg" => "You are a robot!", "response" => $response));
+        echo "Failed reCAPTCHA verification";
     }
 }
 ?>
@@ -205,9 +204,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             required>
                     </div>
                 </div>
-                <button class="g-recaptcha  btn btn-dark btn-lg" data-mdb-ripple-color="dark"
-                    data-sitekey="6Lc_WLomAAAAAMj8QtCxAI5Tn73oTY-I3yR2DG7f" data-callback='onSubmit'
-                    data-action='submit'>Submit</button>
+                <button class="btn btn-dark btn-lg" data-mdb-ripple-color="dark" type="submit">Submit</button>
             </form>
         </div>
     </div>
@@ -215,10 +212,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <!-- Material Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Remove success message after 3 seconds
-        function onSubmit(token) {
-            document.getElementById("demo-form").submit();
-        }
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6Lc_WLomAAAAAMj8QtCxAI5Tn73oTY-I3yR2DG7f', { action: 'submit' }).then(function (token) {
+                document.getElementById('recaptcha_token').value = token;
+            });
+        });
         setTimeout(function () {
             var successAlert = document.getElementById('successAlert');
             if (successAlert) {
