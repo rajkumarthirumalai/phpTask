@@ -1,7 +1,10 @@
 <?php
 // Start the session
 session_start();
-
+if (!isset($_SESSION['admin_email'])) {
+    header("Location: admin.php");
+    exit();
+}
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

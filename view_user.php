@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+if (!isset($_SESSION['admin_email'])) {
+    header("Location: admin.php");
+    exit();
+}
 // Check if the user ID is provided
 if (isset($_GET['id'])) {
     $userId = $_GET['id'];

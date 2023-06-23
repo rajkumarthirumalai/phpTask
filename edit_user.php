@@ -4,11 +4,20 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
-
+if (!isset($_SESSION['admin_email'])) {
+    header("Location: admin.php");
+    exit();
+}
 require_once "./db_config.php";
+
+$selectRolesQuery = "SELECT * FROM roles";
+$rolesResult = $conn->query($selectRolesQuery);
+
+
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
 
+    // Retrieve user data
     $selectUserQuery = "SELECT * FROM users WHERE id = ?";
     $stmt = $conn->prepare($selectUserQuery);
     $stmt->bind_param("s", $id);
@@ -29,6 +38,7 @@ if (isset($_GET["id"])) {
         $zipcode = $user["zipcode"];
         $capital_amount = $user["capital_amount"];
         $account_number = $user["account_number"];
+        $role_id = $user["role_id"]; // Added role_id
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $updatedFirstname = $_POST["firstname"];
@@ -38,13 +48,14 @@ if (isset($_GET["id"])) {
             $updatedDateOfBirth = $_POST["date_of_birth"];
             $updatedCity = $_POST["city"];
             $updatedCountry = $_POST["country"];
-            $updatedZipcode = $_POST["zipcode"];    
+            $updatedZipcode = $_POST["zipcode"];
             $updatedCapitalAmount = $_POST["capital_amount"];
             $updatedAccountNumber = $_POST["account_number"];
+            $updatedRoleId = $_POST["role_id"]; // Added role_id
 
-            $updateUserQuery = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, address = ?, date_of_birth = ?, city = ?, country = ?, zipcode = ?, capital_amount = ?, account_number = ? WHERE id = ?";
+            $updateUserQuery = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, address = ?, date_of_birth = ?, city = ?, country = ?, zipcode = ?, capital_amount = ?, account_number = ?, role_id = ? WHERE id = ?";
             $stmt = $conn->prepare($updateUserQuery);
-            $stmt->bind_param("ssssssssssi", $updatedFirstname, $updatedLastname, $updatedPhoneNumber, $updatedAddress, $updatedDateOfBirth, $updatedCity, $updatedCountry, $updatedZipcode, $updatedCapitalAmount, $updatedAccountNumber, $id);
+            $stmt->bind_param("ssssssssssis", $updatedFirstname, $updatedLastname, $updatedPhoneNumber, $updatedAddress, $updatedDateOfBirth, $updatedCity, $updatedCountry, $updatedZipcode, $updatedCapitalAmount, $updatedAccountNumber, $updatedRoleId, $id);
 
             if ($stmt->execute()) {
                 $_SESSION['registrationSuccess'] = true; // Set registration success flag in session
@@ -57,6 +68,9 @@ if (isset($_GET["id"])) {
             $stmt->close();
             $conn->close();
         }
+
+        // Retrieve roles list
+      
     } else {
         die($mysql->error);
     }
@@ -90,7 +104,6 @@ if (isset($_GET["id"])) {
 
             <form action="<?php echo $_SERVER['PHP_SELF'] . '?id=' . $id; ?>" method="POST">
                 <div class="row">
-
                     <div class="col-lg-6 col-md-12 mb-4">
                         <label for="firstname" class="form-label">First Name</label>
                         <input type="text" class="form-control" id="firstname" name="firstname"
@@ -116,8 +129,8 @@ if (isset($_GET["id"])) {
                 </div>
                 <div class="mb-3">
                     <label for="address" class="form-label">Address Lane</label>
-                    <input type="text" class="form-control" id="address" name="address" value="<?php echo $address; ?>"
-                        required>
+                    <input type="text" class="form-control" id="address" name="address"
+                        value="<?php echo $address; ?>" required>
                 </div>
                 <div class="row">
                     <div class="col-lg-3 col-md-12 mb-4">
@@ -146,6 +159,24 @@ if (isset($_GET["id"])) {
                         <label for="capital_amount" class="form-label">Capital Amount</label>
                         <input type="number" step="0.01" class="form-control" id="capital_amount"
                             value="<?php echo $capital_amount; ?>" name="capital_amount" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 mb-4">
+                        <label for="role_id" class="form-label">Role</label>
+                        <select class="form-control" id="role_id" name="role_id">
+                            <?php
+                            var_dump( $rolesResult );
+                            print_r($rolesResult) ;
+                            while ($row = $rolesResult->fetch_assoc()) {
+                                
+                                $role_id = $row['id'];
+                                $role_name = $row['role'];
+                                $selected = ($role_id == $user['role_id']) ? "selected" : "";
+                                echo "<option value=\"$role_id\" $selected>$role_name</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                 </div>
                 <input type="submit" value="Update User" class="btn btn-primary">
